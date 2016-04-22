@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>测试</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<link rel="stylesheet" href="reset.css">
+<style>
+	#outer{width: 802px; height: 136px; border: 1px solid red; overflow: hidden; margin:30px auto;}
+	#inner{width: 4000px; height: 136px; overflow: hidden;}
+	#con1,#con2{float: left;}
+	#con1 img,#con2 img{width: 193px; height: 136px; float: left; margin-right: 10px;}
+	#fx{text-align: center;}
+	#fx button{font-size: 26px; padding: 8px;}
+</style>
+</head>
+<body>
+	<div id="outer">
+		<div id="inner">
+			<div id="con1">
+				<img src="images/01.jpg" alt="">
+				<img src="images/02.jpg" alt="">
+				<img src="images/03.jpg" alt="">
+				<img src="images/04.jpg" alt="">
+				<img src="images/05.jpg" alt="">
+			</div>
+			<div id="con2"></div>
+		</div>
+	</div>
+	<div id="fx">
+		<button><左滚</button>
+		<button>右滚></button>
+	</div>
+</body>
+<script>
+	var outer=document.getElementById('outer');
+	var con1=document.getElementById('con1');
+	var con2=document.getElementById('con2');
+	var img=con1.getElementsByTagName('img')[0];
+	var btn=document.getElementsByTagName('button');
+	con2.innerHTML=con1.innerHTML;
+	var time1=null,time2=null,time3=null,time4=null;
+	var maxw=con1.offsetWidth;
+	var x=0;//标记 往左走
+
+	function clear(){
+		clearInterval(time1);
+		clearTimeout(time2); 
+		clearInterval(time4);
+		clearTimeout(time3);
+	}
+	function moveLeft(){//左滚动函数
+		outer.scrollLeft++;
+		if (outer.scrollLeft>=maxw) {
+			outer.scrollLeft=0;
+		};
+		if (outer.scrollLeft%(img.offsetWidth+10)==0) {
+			clear();
+			time2=setTimeout(function (){
+				time1=setInterval(moveLeft,10);
+			},2000);
+		};
+	}
+	// time1=setInterval(moveLeft,10);//进入页面执行
+
+	function moveRight(){//右滚动函数
+		outer.scrollLeft--;
+		if (outer.scrollLeft<=0) {
+			outer.scrollLeft=maxw;
+		};
+		if (outer.scrollLeft%(img.offsetWidth+10)==0) {
+			clear();
+			time3=setTimeout(function (){
+				time4=setInterval(moveRight,10);
+			},2000);
+		};
+	}
+
+	btn[0].onclick=function (){
+		clear();
+		// time1=setInterval(moveLeft,10);
+		x=0;
+	}
+	btn[1].onclick=function (){
+		clear();
+		time4=setInterval(moveRight,10);
+		x=1;
+	}
+	outer.onmouseover=function (){
+		clear();
+	}
+	outer.onmouseout=function (){
+		if (x==0) {
+			time1=setInterval(moveLeft,10);
+		} else{
+			time4=setInterval(moveRight,10);
+		};
+	}
+</script>
+</html>
